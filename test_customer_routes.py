@@ -244,6 +244,56 @@ class TestDeleteCustomer:
         data = json.loads(response.data)
         assert len(data) == 3  # Should have 3 remaining customers
 
+class TestSearchCustomers:
+    def test_search_by_first_name(self, client):
+        resp = client.get('/api/customers/search?q=john')
+        assert resp.status_code == 200
+        data = json.loads(resp.data)
+        assert isinstance(data, list)
+        assert any(c['first_name'].lower() == 'john' for c in data)
+
+    def test_search_by_last_name(self, client):
+        resp = client.get('/api/customers/search?q=smith')
+        assert resp.status_code == 200
+        data = json.loads(resp.data)
+        assert len(data) == 1
+        assert data[0]['last_name'] == 'Smith'
+
+    def test_search_by_email_fragment(self, client):
+        resp = client.get('/api/customers/search?q=bob.johnson')
+        assert resp.status_code == 200
+        data = json.loads(resp.data)
+        assert len(data) == 1
+        assert data[0]['email'].lower().startswith('bob.johnson')
+
+    def test_search_case_insensitive(self, client):
+        resp = client.get('/api/customers/search?q=ALICE')
+        assert resp.status_code == 200
+        data = json.loads(resp.data)
+        assert any(c['first_name'] == 'Alice' for c in data)
+
+    def test_search_no_query_param(self, client):
+        resp = client.get('/api/customers/search')
+        assert resp.status_code == 400
+        data = json.loads(resp.data)
+        assert 'error' in data
+        assert data['error'] == 'Query parameter "q" is required'
+
+    def test_search_empty_query(self, client):
+        resp = client.get('/api/customers/search?q=')
+        assert resp.status_code == 400
+        data = json.loads(resp.data)
+        assert data['error'] == 'Query parameter "q" is required'
+
+    def test_search_no_matches_returns_empty_list(self, client):
+        resp = client.get('/api/customers/search?q=nonexistentname')
+        assert resp.status_code == 200
+        data = json.loads(resp.data)
+        assert isinstance(data, list)
+        assert data == []
+
+
+
 
 class TestHelperFunctions:
     """Test cases for helper functions."""
@@ -310,3 +360,5 @@ class TestIntegrationScenarios:
         # Verify deletion
         response = client.get(f'/api/customers/{customer_id}')
         assert response.status_code == 404
+
+        
