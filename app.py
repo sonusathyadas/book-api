@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from routes import book_bp
+from customer_routes import customer_bp
 
 app = Flask(__name__)
 
@@ -9,6 +10,9 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Register the book blueprint
 app.register_blueprint(book_bp)
+
+# Register the customer blueprint
+app.register_blueprint(customer_bp)
 
 @app.route('/', methods=['GET'])
 def home():
