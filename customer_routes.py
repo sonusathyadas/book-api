@@ -98,3 +98,20 @@ def delete_customer(customer_id):
     
     customers.remove(customer)
     return jsonify({'message': 'Customer deleted successfully'}), 200
+
+# Create a route to search customers by name or email
+@customer_bp.route('/search', methods=['GET'])
+def search_customers():
+    """Search customers by name or email"""
+    query = request.args.get('q', '').lower()
+    if not query:
+        return jsonify({'error': 'Query parameter "q" is required'}), 400
+    
+    matched_customers = [
+        customer.to_dict() for customer in customers
+        if query in customer.first_name.lower() or
+           query in customer.last_name.lower() or
+           query in customer.email.lower()
+    ]
+    
+    return jsonify(matched_customers)
