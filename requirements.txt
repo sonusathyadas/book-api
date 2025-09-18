@@ -1,2 +1,7 @@
 flask
 flask-cors
+
+# Testing dependencies
+pytest
+pytest-flask
+pytest-cov
