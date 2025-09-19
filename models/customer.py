@@ -3,7 +3,7 @@ class Customer:
     Customer model class representing a customer with its properties.
     """
     
-    def __init__(self, id: int, first_name: str, last_name: str, email: str, phone: str, address: str):
+    def __init__(self, id: int, first_name: str, last_name: str, email: str, phone: str, address: str, membership_id: str = None):
         """
         Initialize a Customer instance.
         
@@ -14,6 +14,7 @@ class Customer:
             email (str): Email address of the customer
             phone (str): Phone number of the customer
             address (str): Address of the customer
+            membership_id (str): Membership identifier for the customer (optional)
         """
         self.id = id
         self.first_name = first_name
@@ -21,12 +22,13 @@ class Customer:
         self.email = email
         self.phone = phone
         self.address = address
+        self.membership_id = membership_id
     
     def __repr__(self):
         """
         String representation of the Customer object.
         """
-        return f"Customer(id={self.id}, first_name='{self.first_name}', last_name='{self.last_name}', email='{self.email}', phone='{self.phone}', address='{self.address}')"
+        return f"Customer(id={self.id}, first_name='{self.first_name}', last_name='{self.last_name}', email='{self.email}', phone='{self.phone}', address='{self.address}', membership_id='{self.membership_id}')"
     
     def __str__(self):
         """
@@ -44,5 +46,6 @@ class Customer:
             'last_name': self.last_name,
             'email': self.email,
             'phone': self.phone,
-            'address': self.address
+            'address': self.address,
+            'membership_id': self.membership_id
         }
