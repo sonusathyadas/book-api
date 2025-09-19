@@ -6,11 +6,11 @@ customer_bp = Blueprint('customers', __name__, url_prefix='/api/customers')
 
 # Sample customer data - in memory storage
 customers = [
-    Customer(1, "John", "Doe", "john.doe@email.com", "555-0101", "123 Main St, Anytown, USA"),
-    Customer(2, "Jane", "Smith", "jane.smith@email.com", "555-0102", "456 Oak Ave, Somewhere, USA"),
-    Customer(3, "Bob", "Johnson", "bob.johnson@email.com", "555-0103", "789 Pine Rd, Anywhere, USA"),
-    Customer(4, "Alice", "Williams", "alice.williams@email.com", "555-0104", "321 Elm St, Nowhere, USA"),
-    Customer(5, "Charlie", "Brown", "charlie.brown@email.com", "555-0105", "654 Maple Dr, Everywhere, USA")
+    Customer(1, "John", "Doe", "john.doe@email.com", "555-0101", "123 Main St, Anytown, USA", "MEM001"),
+    Customer(2, "Jane", "Smith", "jane.smith@email.com", "555-0102", "456 Oak Ave, Somewhere, USA", "MEM002"),
+    Customer(3, "Bob", "Johnson", "bob.johnson@email.com", "555-0103", "789 Pine Rd, Anywhere, USA", "MEM003"),
+    Customer(4, "Alice", "Williams", "alice.williams@email.com", "555-0104", "321 Elm St, Nowhere, USA", "MEM004"),
+    Customer(5, "Charlie", "Brown", "charlie.brown@email.com", "555-0105", "654 Maple Dr, Everywhere, USA", "MEM005")
 ]
 
 def find_customer_by_id(customer_id):
@@ -53,7 +53,8 @@ def add_customer():
             last_name=data['last_name'],
             email=data['email'],
             phone=data['phone'],
-            address=data['address']
+            address=data['address'],
+            membership_id=data.get('membership_id')
         )
         
         customers.append(new_customer)
@@ -83,6 +84,8 @@ def update_customer(customer_id):
             customer.phone = data['phone']
         if 'address' in data:
             customer.address = data['address']
+        if 'membership_id' in data:
+            customer.membership_id = data['membership_id']
         
         return jsonify(customer.to_dict())
         
