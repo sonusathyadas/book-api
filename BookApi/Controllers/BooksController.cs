@@ -87,6 +87,28 @@ public class BooksController : ControllerBase
         }
     }
 
+    // GET /api/books/author/{author}
+    [HttpGet("author/{author}")]
+    public async Task<IActionResult> GetByAuthor(string author, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+    {
+        if (page < 1)
+            return BadRequest(new { message = "Page must be greater than or equal to 1." });
+
+        if (pageSize < 1)
+            return BadRequest(new { message = "Page size must be greater than or equal to 1." });
+
+        try
+        {
+            var books = await _repository.GetByAuthorAsync(author, page, pageSize);
+            return Ok(books);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving books for author {Author}.", author);
+            return StatusCode(500, new { message = "An error occurred while retrieving books by author." });
+        }
+    }
+
     // DELETE /api/books/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)

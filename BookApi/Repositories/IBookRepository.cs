@@ -9,4 +9,5 @@ public interface IBookRepository
     Task<Book> AddAsync(Book book);
     Task<Book?> UpdateAsync(int id, Book book);
     Task<bool> DeleteAsync(int id);
+    Task<IEnumerable<Book>> GetByAuthorAsync(string author, int page, int pageSize);
 }

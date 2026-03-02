@@ -55,4 +55,13 @@ public class BookRepository : IBookRepository
         await _context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<IEnumerable<Book>> GetByAuthorAsync(string author, int page, int pageSize)
+    {
+        return await _context.Books
+            .Where(b => EF.Functions.Like(b.Author, $"%{author}%"))
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
 }
