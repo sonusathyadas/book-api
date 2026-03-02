@@ -58,8 +58,11 @@ public class BookRepository : IBookRepository
 
     public async Task<IEnumerable<Book>> GetByAuthorAsync(string author, int page, int pageSize)
     {
+        if (string.IsNullOrWhiteSpace(author))
+            return new List<Book>();
+        var term = author.Trim();
         return await _context.Books
-            .Where(b => EF.Functions.Like(b.Author, $"%{author}%"))
+            .Where(b => EF.Functions.Like(b.Author, "%" + term + "%"))
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
