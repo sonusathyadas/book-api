@@ -56,6 +56,10 @@ public class BooksController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Book book)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             var created = await _repository.AddAsync(book);
@@ -72,6 +76,10 @@ public class BooksController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] Book book)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             var updated = await _repository.UpdateAsync(id, book);
