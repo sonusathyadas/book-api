@@ -1,0 +1,18 @@
+@BookApi_HostAddress = http://localhost:5243
+
+GET {{BookApi_HostAddress}}/api/books
+Accept: application/json
+
+###
+
+POST {{BookApi_HostAddress}}/api/books
+Content-Type: application/json
+
+{
+  "title": "The Hobbit",
+  "author": "J.R.R. Tolkien",
+  "publishedYear": 1937,
+  "genre": "Fantasy"
+}
+
+###
