@@ -13,6 +13,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 
+builder.Services.AddEndpointsApiExplorer(); // Required for Minimal APIs, but good practice for controllers too
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+});
+
 var app = builder.Build();
 
 // Ensure the database is created.
@@ -21,12 +27,6 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
 }
-
-builder.Services.AddEndpointsApiExplorer(); // Required for Minimal APIs, but good practice for controllers too
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-});
 
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
